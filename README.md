@@ -3,7 +3,7 @@
 This module functions similarly to the `uuid()` function, except that it produces a UUID value during the plan step, which remains consistent through to the apply step.
 
 On Windows, it will use PowerShell's built-in `[guid]::NewGuid()` function. On Unix, it will use the first of the following methods that is available:
-- `uuidgen`
+- `uuidgen` (if it's installed)
 - `cat /proc/sys/kernel/random/uuid` (most Linux systems)
 - `cat /compat/linux/proc/sys/kernel/random/uuid` (FreeBSD)
 
