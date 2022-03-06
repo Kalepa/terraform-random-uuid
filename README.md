@@ -1,6 +1,8 @@
 # Terraform UUID
 
-This module functions similarly to the `uuid()` function, except that it produces a UUID value during the plan step, which remains consistent through to the apply step.
+On the Terraform Registry: [Invicton-Labs/uuid/random](https://registry.terraform.io/modules/Invicton-Labs/uuid/random/latest)
+
+This module functions similarly to the `uuid()` function, except that it produces a UUID value during the plan step which remains consistent through to the apply step.
 
 On Windows, it will use PowerShell's built-in `[guid]::NewGuid()` function. On Unix, it will use the first of the following methods that is available:
 - `uuidgen` (if it's installed)
@@ -11,7 +13,7 @@ On Windows, it will use PowerShell's built-in `[guid]::NewGuid()` function. On U
 
 ```
 module "uuid" {
-  source = "Invicton-Labs/uuid/null"
+  source = "Invicton-Labs/uuid/random"
 }
 
 output "uuid" {
