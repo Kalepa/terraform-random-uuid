@@ -19,3 +19,5 @@ jobs:
           echo "Images: ${{ steps.matrix.outputs.images }}"
           echo "Windows Versions: ${{ steps.matrix.outputs.windows_versions }}"
           echo "Mac Versions: ${{ steps.matrix.outputs.mac_versions }}"
+          echo "Linux Containers Matrix: ${{ steps.matrix.outputs.linux_containers_matrix }}"
+          
