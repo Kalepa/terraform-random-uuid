@@ -24,18 +24,40 @@ jobs:
       linux_shells_matrix: ${{ steps.matrix.outputs.linux_shells_matrix }}
       non_linux_matrix: ${{ steps.matrix.outputs.non_linux_matrix }}
           
-
-  Linux-Containers:
+  Linux:
     needs: [Matrix]
     strategy: ${{ fromJSON(needs.Matrix.outputs.linux_containers_matrix)}}
     runs-on: ${{ matrix.runs-on }}
     container:
       image: ${{ matrix.image }}
-
     steps:
       - name: Run Tests
         id: tests
         uses: Invicton-Labs/terraform-module-testing-configuration/linux-containers@dev
+        with:
+          terraform_version: ${{ matrix.terraform_version }}
+          testing_path: tester
+                    
+  LinuxShells:
+    needs: [Matrix]
+    strategy: ${{ fromJSON(needs.Matrix.outputs.linux_shells_matrix)}}
+    runs-on: ${{ matrix.runs-on }}
+    steps:
+      - name: Run Tests
+        id: tests
+        uses: Invicton-Labs/terraform-module-testing-configuration/linux-shells@dev
+        with:
+          terraform_version: ${{ matrix.terraform_version }}
+          testing_path: tester       
+
+  NonLinux:
+    needs: [Matrix]
+    strategy: ${{ fromJSON(needs.Matrix.outputs.non_linux_matrix)}}
+    runs-on: ${{ matrix.runs-on }}
+    steps:
+      - name: Run Tests
+        id: tests
+        uses: Invicton-Labs/terraform-module-testing-configuration/non-linux@dev
         with:
           terraform_version: ${{ matrix.terraform_version }}
           testing_path: tester
