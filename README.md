@@ -1,3 +1,5 @@
+![Build](https://github.com/Invicton-Labs/terraform-random-uuid/actions/workflows/CICD.yml/badge.svg)
+
 # Terraform UUID
 
 On the Terraform Registry: [Invicton-Labs/uuid/random](https://registry.terraform.io/modules/Invicton-Labs/uuid/random/latest)
@@ -8,6 +10,10 @@ On Windows, it will use PowerShell's built-in `[guid]::NewGuid()` function. On U
 - `uuidgen` (if it's installed)
 - `cat /proc/sys/kernel/random/uuid` (most Linux systems)
 - `cat /compat/linux/proc/sys/kernel/random/uuid` (FreeBSD)
+- `/dev/urandom` (other Unix-based systems, e.g. MacOS)
+- `/dev/random` (other Unix-based systems, e.g. MacOS)
+
+Regardless of the method that it uses, it guarantees that the output always matches the expected UUID format with hyphens.
 
 ## Usage
 
