@@ -15,9 +15,26 @@ jobs:
 
       - name: Output Matrix
         run: |
-          echo "TF Versions: ${{ steps.matrix.outputs.terraform_versions }}"
-          echo "Images: ${{ steps.matrix.outputs.images }}"
-          echo "Windows Versions: ${{ steps.matrix.outputs.windows_versions }}"
-          echo "Mac Versions: ${{ steps.matrix.outputs.mac_versions }}"
           echo "Linux Containers Matrix: ${{ steps.matrix.outputs.linux_containers_matrix }}"
+          echo "Linux Shells Matrix: ${{ steps.matrix.outputs.linux_shells_matrix }}"
+          echo "Non-Linux Matrix: ${{ steps.matrix.outputs.non_linux_matrix }}"
+
+    outputs:
+      linux_containers_matrix: ${{ steps.matrix.outputs.linux_containers_matrix }}
+      linux_shells_matrix: ${{ steps.matrix.outputs.linux_shells_matrix }}
+      non_linux_matrix: ${{ steps.matrix.outputs.non_linux_matrix }}
           
+
+  Linux-Containers:
+    needs: [Matrix]
+    strategy: ${{ fromJSON(needs.Matrix.outputs.linux_containers_matrix)}}
+    runs-on: ${{ matrix.runs-on }}
+    container:
+      image: ${{ matrix.image }}
+
+      - name: Run Tests
+        id: tests
+        uses: Invicton-Labs/terraform-module-testing-configuration/linux-containers@dev
+        with:
+          terraform_version: ${{ matrix.terraform_version }}
+          testing_path: tester
