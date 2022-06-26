@@ -14,7 +14,7 @@ jobs:
           minimum_tf_version: '0.13.0'
 
       - name: Output Matrix
-        runs: |
+        run: |
           echo "TF Versions: ${{ steps.matrix.outputs.terraform_versions }}"
           echo "Images: ${{ steps.matrix.outputs.images }}"
           echo "Windows Versions: ${{ steps.matrix.outputs.windows_versions }}"
