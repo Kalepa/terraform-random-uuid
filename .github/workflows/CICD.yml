@@ -32,6 +32,7 @@ jobs:
     container:
       image: ${{ matrix.image }}
 
+    steps:
       - name: Run Tests
         id: tests
         uses: Invicton-Labs/terraform-module-testing-configuration/linux-containers@dev
