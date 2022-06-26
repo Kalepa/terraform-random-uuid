@@ -42,6 +42,7 @@ jobs:
     needs: [Matrix]
     strategy: ${{ fromJSON(needs.Matrix.outputs.linux_shells_matrix)}}
     runs-on: ${{ matrix.runs-on }}
+    container:
     steps:
       - name: Run Tests
         id: tests
