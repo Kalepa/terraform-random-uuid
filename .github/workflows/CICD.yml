@@ -98,10 +98,10 @@ jobs:
         working-directory: /workspace/tester
         run: terraform init
 
-      # We only need to run a plan, since there are no resources used in testing
-      - name: Terraform Plan
+      # Apply the Terraform config
+      - name: Terraform Apply
         working-directory: /workspace/tester
-        run: terraform plan
+        run: terraform apply -auto-approve
 
   LinuxShells:
     strategy:
@@ -140,14 +140,14 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      # We only need to run a plan, since there are no resources used in testing
-      - name: Terraform Plan (bash)
+      # Apply the Terraform config
+      - name: Terraform Apply (bash)
         run: terraform apply -auto-approve -var "unix_interpreter=/bin/bash"
-      - name: Terraform Plan (ksh)
+      - name: Terraform Apply (ksh)
         run: terraform apply -auto-approve -var "unix_interpreter=/bin/ksh"
-      - name: Terraform Plan (ash)
+      - name: Terraform Apply (ash)
         run: terraform apply -auto-approve -var "unix_interpreter=/bin/ash"
-      - name: Terraform Plan (dash)
+      - name: Terraform Apply (dash)
         run: terraform apply -auto-approve -var "unix_interpreter=/bin/dash"
 
   Windows:
@@ -187,8 +187,8 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      # We only need to run a plan, since there are no resources used in testing
-      - name: Terraform Plan
+      # Apply the Terraform config
+      - name: Terraform Apply
         run: terraform apply -auto-approve
         
   MacOS:
@@ -227,8 +227,8 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      # We only need to run a plan, since there are no resources used in testing
-      - name: Terraform Plan
+      # Apply the Terraform config
+      - name: Terraform Apply
         run: terraform apply -auto-approve
 
   # This job just waits for all other jobs to pass. We have it here
