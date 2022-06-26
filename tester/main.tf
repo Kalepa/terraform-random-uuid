@@ -11,5 +11,5 @@ module "assert_valid_uuid" {
 }
 
 output "checked" {
-  value = module.assert_valid_uuid.checked
+  value = module.assert_valid_uuid.checked ? module.uuid.uuid : null
 }
