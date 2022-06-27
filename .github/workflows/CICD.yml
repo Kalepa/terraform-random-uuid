@@ -15,50 +15,29 @@ jobs:
 
       - name: Output Matrix
         run: |
-          echo "Linux Containers Matrix: ${{ steps.matrix.outputs.linux_containers_matrix }}"
-          echo "Linux Shells Matrix: ${{ steps.matrix.outputs.linux_shells_matrix }}"
-          echo "Non-Linux Matrix: ${{ steps.matrix.outputs.non_linux_matrix }}"
+          echo "Strategy: ${{ steps.matrix.outputs.strategy }}"
 
     outputs:
-      linux_containers_matrix: ${{ steps.matrix.outputs.linux_containers_matrix }}
-      linux_shells_matrix: ${{ steps.matrix.outputs.linux_shells_matrix }}
-      non_linux_matrix: ${{ steps.matrix.outputs.non_linux_matrix }}
+      strategy: ${{ steps.matrix.outputs.strategy }}
           
-  Linux:
+  Test:
     needs: [Matrix]
-    strategy: ${{ fromJSON(needs.Matrix.outputs.linux_containers_matrix)}}
+    strategy: ${{ fromJSON(needs.Matrix.outputs.strategy)}}
     runs-on: ${{ matrix.runs-on }}
-    container:
-      image: ${{ matrix.image }}
+    container: ${{ matrix.container }}
     steps:
       - name: Run Tests
         id: tests
-        uses: Invicton-Labs/terraform-module-testing-configuration/linux-containers@dev
+        uses: Invicton-Labs/terraform-module-testing-configuration/test@dev
         with:
-          terraform_version: ${{ matrix.terraform_version }}
           testing_path: tester
-                    
-  LinuxShells:
-    needs: [Matrix]
-    strategy: ${{ fromJSON(needs.Matrix.outputs.linux_shells_matrix)}}
-    runs-on: ${{ matrix.runs-on }}
-    container:
-    steps:
-      - name: Run Tests
-        id: tests
-        uses: Invicton-Labs/terraform-module-testing-configuration/linux-shells@dev
-        with:
-          terraform_version: ${{ matrix.terraform_version }}
-          testing_path: tester       
 
-  NonLinux:
-    needs: [Matrix]
-    strategy: ${{ fromJSON(needs.Matrix.outputs.non_linux_matrix)}}
-    runs-on: ${{ matrix.runs-on }}
+  # This job just waits for all other jobs to pass. We have it here
+  # so our branch protection rule can reference a single job, instead
+  # of needing to list every matrix value of every job above.
+  Passed:
+    runs-on: ubuntu-latest
+    needs: [Test]
     steps:
-      - name: Run Tests
-        id: tests
-        uses: Invicton-Labs/terraform-module-testing-configuration/non-linux@dev
-        with:
-          terraform_version: ${{ matrix.terraform_version }}
-          testing_path: tester
+    - name: Mark tests as passed
+      run: echo "🎉"
